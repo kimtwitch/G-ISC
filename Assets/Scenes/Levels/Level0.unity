@@ -587,7 +587,7 @@ Transform:
   m_GameObject: {fileID: 387562213}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -11.98, z: 22}
-  m_LocalScale: {x: 10.19, y: 1, z: 2.64}
+  m_LocalScale: {x: 10.19, y: 0.11, z: 2.64}
   m_Children: []
   m_Father: {fileID: 205078383}
   m_RootOrder: 0
@@ -603,7 +603,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &387562216
@@ -1756,8 +1756,11 @@ MonoBehaviour:
   explosionSound: {fileID: 3919735}
   hurtSound: {fileID: 3919735}
   health: 100
-  trigger: 0
   primaryObject: 1
+  trigger: 0
+  triggerStay: 0
+  targeted: 0
+  gravityDamper: 0
 --- !u!1001 &1142007497
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2574,8 +2577,11 @@ MonoBehaviour:
   explosionSound: {fileID: 3919735}
   hurtSound: {fileID: 3919735}
   health: 100
-  trigger: 0
   primaryObject: 0
+  trigger: 0
+  triggerStay: 0
+  targeted: 0
+  gravityDamper: 0
 --- !u!54 &1788705860
 Rigidbody:
   m_ObjectHideFlags: 0
