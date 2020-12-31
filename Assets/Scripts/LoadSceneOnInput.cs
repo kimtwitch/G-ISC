@@ -32,9 +32,6 @@ public class LoadSceneOnInput : MonoBehaviour {
 				break;
 				
 			case "Start":
-				if (Input.GetKey("escape")) {
-					Application.Quit();
-				}
 				break;
 				
 			default:

@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		Cursor.lockState = CursorLockMode.Confined;
 	}
 
 	// Update is called once per frame
@@ -25,11 +26,13 @@ public class PlayerController : MonoBehaviour {
 				{
 					Time.timeScale = 0f;
 					PauseUI.SetActive(true);
+					Cursor.lockState = CursorLockMode.None;
 				}
 				else
 				{
 					Time.timeScale = 1.0f;
 					PauseUI.SetActive(false);
+					Cursor.lockState = CursorLockMode.Confined;
 				}
 					
 			}

@@ -47,6 +47,11 @@ public class MenuButtonController : MonoBehaviour
         {
             keyDown = false;
         }
+
+        
+        if (Input.GetKey("escape")) {
+            Application.Quit();
+        }
         
 		if (Input.GetAxis("Submit") == 1) {
             switch(index)
