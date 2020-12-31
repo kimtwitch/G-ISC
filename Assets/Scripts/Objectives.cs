@@ -14,8 +14,12 @@ public class Objectives : MonoBehaviour
 	public AudioSource explosionSound;
 	public AudioSource hurtSound;
     public float health = 100;
-    public bool trigger;
     public bool primaryObject;
+    public bool trigger;
+    public bool triggerStay;
+    public bool targeted;
+    public float gravityDamper;
+    public float inertiaDamper;
 
 	private Rigidbody rb;
 
@@ -28,6 +32,7 @@ public class Objectives : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+Debug.Log(inertiaDamper);
         if (transform.position.x < -30f || transform.position.y < -30f)
         {
             SampleLost();
@@ -38,15 +43,35 @@ public class Objectives : MonoBehaviour
             transform.position = transform.position + new Vector3( ObstacleController.GetComponent<ObstacleController>().speed * Time.deltaTime, 0, 0);
         }
 
-        if (!TractorBeam.activeInHierarchy)
+        if ((!TractorBeam.activeInHierarchy) || (TractorBeam.activeInHierarchy && rb.velocity.y <= Physics.gravity.y))
         {
-            trigger = false;
+            if(inertiaDamper<1 && targeted && ObstacleController.GetComponent<ObstacleController>().moving)
+            {
+                float inertia = Mathf.Lerp(0, ObstacleController.GetComponent<ObstacleController>().speed, inertiaDamper);
+                inertiaDamper += Time.deltaTime;
+                transform.position = transform.position + new Vector3( inertia * Time.deltaTime, 0, 0);
+            }
+            else
+            {
+                trigger = false;
+                targeted = false;
+            }
+        }
+        //else if(rb.velocity.y <= Physics.gravity.y )
+        //{
+        //    trigger = false;
+        //}
+        else if(!triggerStay && targeted && trigger)
+        {
+            tractorTarget(false);
         }
     }
 
     void onCollisionEnter(Collision hit)
     {
-        hurtSound.Play();
+        //hurtSound.Play();
+        Debug.Log(hit.collider.name);
+        Explode();
         //float impulseAmount = (hit.impulse.x + hit.impulse.y) + 100;
         //if (health - impulseAmount > 0)
         //{
@@ -62,6 +87,7 @@ public class Objectives : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+
         // Destroy objective if it touches antimatter zone
         if (other.gameObject.tag == "DestroyZone")
         {
@@ -80,6 +106,18 @@ public class Objectives : MonoBehaviour
             }
         }
 
+        if (other.gameObject.tag == "TractorBeam")
+        {
+            targeted = true;
+        }
+
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        triggerStay = false;
+        gravityDamper = 0;
+        inertiaDamper = 0;
     }
 
     void OnTriggerStay(Collider other)
@@ -88,11 +126,8 @@ public class Objectives : MonoBehaviour
         if (other.gameObject.tag == "TractorBeam")
         {
             trigger = true;
-
-            float diffX = Mathf.Abs(transform.position.x - playerObject.transform.position.x);
-            int directionX = transform.position.x > playerObject.transform.position.x ? -1 : transform.position.x < playerObject.transform.position.x ? 1 : 0;
-
-		    rb.velocity = new Vector3(diffX * directionX * thrust, thrust, 0);
+            triggerStay = true;
+            tractorTarget(true);
 
             if(primaryObject && !ObstacleController.GetComponent<ObstacleController>().atFinish)
             {
@@ -101,6 +136,32 @@ public class Objectives : MonoBehaviour
             }
         }
         
+    }
+
+    void tractorTarget(bool goesUp)
+    {
+        float diffX = Mathf.Abs(transform.position.x - playerObject.transform.position.x);
+        float directionX = transform.position.x > playerObject.transform.position.x ? -1.5f : transform.position.x < playerObject.transform.position.x ? 1 : 0;
+        float directionY = transform.position.y > playerObject.transform.position.y ? Physics.gravity.y : transform.position.y < playerObject.transform.position.y ? 1 : 0;
+        
+        if(goesUp)
+        {
+            rb.velocity = new Vector3(diffX * directionX * thrust, directionY * thrust, 0);
+        }
+        else 
+        {
+            float gravityAmount = Mathf.Lerp(0, Physics.gravity.y, gravityDamper);
+            if(gravityDamper<1 && directionY > 0)
+            {
+                //Slowly adjust gravity amount from 0 to global gravity (-9.8)
+                gravityDamper += Time.deltaTime;
+                rb.velocity = new Vector3(diffX * directionX , gravityAmount, 0);
+            }
+            else
+            {
+                rb.velocity = new Vector3(diffX * directionX , Physics.gravity.y, 0);
+            }
+        }
     }
 
     void SampleLost(){
