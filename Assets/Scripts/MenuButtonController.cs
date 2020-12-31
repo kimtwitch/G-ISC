@@ -9,11 +9,13 @@ public class MenuButtonController : MonoBehaviour
     public bool keyDown;
     public int maxIndex;
     public AudioSource menuSelectAudio;
+    private string sceneName;
 
     // Start is called before the first frame update
     void Start()
     {
         menuSelectAudio = GetComponent<AudioSource>();
+        sceneName = SceneManager.GetActiveScene().name;
     }
 
     // Update is called once per frame
@@ -50,7 +52,7 @@ public class MenuButtonController : MonoBehaviour
 
         
         if (Input.GetKey("escape")) {
-            Application.Quit();
+            if (sceneName == "Start") Application.Quit();
         }
         
 		if (Input.GetAxis("Submit") == 1) {
