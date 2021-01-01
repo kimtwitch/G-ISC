@@ -32,7 +32,6 @@ public class Objectives : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-Debug.Log(inertiaDamper);
         if (transform.position.x < -30f || transform.position.y < -30f)
         {
             SampleLost();
