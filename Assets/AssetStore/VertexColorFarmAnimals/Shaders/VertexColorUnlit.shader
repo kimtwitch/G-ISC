@@ -1,6 +1,6 @@
 ﻿Shader "VertexColorFarmAnimals/VertexColorUnlit" {
 Properties {
-	_MainTex ("Texture", 2D) = "white" {}
+	_MainTex ("Texture", 3D) = "white" {}
 }
  
 Category {
