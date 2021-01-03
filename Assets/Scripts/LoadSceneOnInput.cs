@@ -25,7 +25,11 @@ public class LoadSceneOnInput : MonoBehaviour {
 		}
 		if(Input.GetKey("r"))
 		{
-			if(currentScene == "Credit") PlayerPrefs.DeleteAll();
+			if(currentScene == "Credit") 
+			{
+				if(cancelSound != null) cancelSound.Play();	
+				PlayerPrefs.DeleteAll();
+			}
 		}
 		
 	}
