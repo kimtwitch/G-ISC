@@ -8,13 +8,14 @@ public class MenuButtonController : MonoBehaviour
     public int index;
     public bool keyDown;
     public int maxIndex;
-    public AudioSource menuSelectAudio;
+    public AudioSource menuSound;
+    public AudioSource selectSound;
     private string sceneName;
 
     // Start is called before the first frame update
     void Start()
     {
-        menuSelectAudio = GetComponent<AudioSource>();
+        menuSound = GetComponent<AudioSource>();
         sceneName = SceneManager.GetActiveScene().name;
     }
 
@@ -25,7 +26,7 @@ public class MenuButtonController : MonoBehaviour
         {
             if(!keyDown)
             {
-                menuSelectAudio.Play();
+                menuSound.Play();
                 if(Input.GetAxis("Vertical") < 0)
                 {
                     if (index < maxIndex){
@@ -56,6 +57,7 @@ public class MenuButtonController : MonoBehaviour
         }
         
 		if (Input.GetAxis("Submit") == 1) {
+            selectSound.Play();
             switch(index)
             {
                 case 0:

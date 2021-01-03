@@ -5,37 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class LoadSceneOnInput : MonoBehaviour {
 	private string currentScene;
+	public AudioSource cancelSound;
 
 	// Use this for initialization
 	void Start () {
-        Scene scene = SceneManager.GetActiveScene();
-		currentScene = scene.name;
+        currentScene = SceneManager.GetActiveScene().name;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		switch(currentScene)
+		if (Input.GetAxis("Submit") == 1)
 		{
-			case "Victory":
-				if (Input.GetAxis("Submit") == 1) {
-					SceneManager.LoadScene("LevelSelect");
-				}
-				if (Input.GetKey("escape")) {
-					SceneManager.LoadScene("Start");
-				}
-				break;
-
-			case "SelectLevel":
-				if (Input.GetKey("escape")) {
-					SceneManager.LoadScene("Start");
-				}
-				break;
-				
-			default:
-				if (Input.GetKey("escape")) {
-					SceneManager.LoadScene("Start");
-				}
-				break;
+			if(currentScene == "Victory") SceneManager.LoadScene("LevelSelect");
+		}
+		if (Input.GetKey("escape"))
+		{
+			if(cancelSound != null) cancelSound.Play();			
+			SceneManager.LoadScene("Start");
 		}
 		
 	}

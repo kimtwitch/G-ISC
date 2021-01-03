@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour {
 	public GameObject PauseUI;
 	public GameObject GameOverUI;
 	public GameObject InGameUI;
+	public AudioSource pauseSound;
+	public AudioSource resetSound;
+	public AudioSource cancelSound;
 
 	// Use this for initialization
 	void Start () 
@@ -21,6 +24,7 @@ public class PlayerController : MonoBehaviour {
 		{
 			if (Input.GetKeyUp("escape")) 
 			{
+				pauseSound.Play();
 				// pause & resume
 				if (Time.timeScale == 1.0f)
 				{
@@ -39,6 +43,7 @@ public class PlayerController : MonoBehaviour {
 			
 			if(Input.GetKey("r") && Time.timeScale == 0f)
 			{
+				resetSound.Play();
 				Time.timeScale = 1.0f;
 				Scene scene = SceneManager.GetActiveScene();
 				SceneManager.LoadScene(scene.name);
@@ -50,9 +55,11 @@ public class PlayerController : MonoBehaviour {
 			InGameUI.SetActive(false);
 			if (Input.GetAxis("Cancel") == 1) 
 			{
+				cancelSound.Play();
 				SceneManager.LoadScene("Start");
 			}
 			if (Input.GetAxis("Submit") == 1) {
+				resetSound.Play();
 				Scene scene = SceneManager.GetActiveScene();
 				SceneManager.LoadScene(scene.name);
 			}

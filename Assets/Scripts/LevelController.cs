@@ -12,7 +12,8 @@ public class LevelController : MonoBehaviour
     public GameObject[] levelObjects;
     public GameObject[] levelObjects_locked;
     public string[] levelDescriptions;
-    public AudioSource menuSelectAudio;
+    public AudioSource menuSound;
+    public AudioSource selectSound;
     public Text levelDesc;
     public bool keyDown;
     private float newX;
@@ -53,14 +54,14 @@ public class LevelController : MonoBehaviour
                 if(Input.GetAxis("Horizontal") > 0)
                 {
                     if (level < unlockedLevel){
-                        menuSelectAudio.Play();
+                        menuSound.Play();
                         level++;
                     }
                 }
                 else if(Input.GetAxis("Horizontal") < 0)
                 {
                     if (level > 0){
-                        menuSelectAudio.Play();
+                        menuSound.Play();
                         level --;
                     }               
                 }
@@ -79,6 +80,7 @@ public class LevelController : MonoBehaviour
 		if (Input.GetAxis("Submit") == 1) {
             if(level < maxLevel)
             {
+                selectSound.Play();
                 SceneManager.LoadScene("Level"+level);
             }
 		}
