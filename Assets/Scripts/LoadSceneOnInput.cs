@@ -23,6 +23,10 @@ public class LoadSceneOnInput : MonoBehaviour {
 			if(cancelSound != null) cancelSound.Play();			
 			SceneManager.LoadScene("Start");
 		}
+		if(Input.GetKey("r"))
+		{
+			if(currentScene == "Credit") PlayerPrefs.DeleteAll();
+		}
 		
 	}
 }

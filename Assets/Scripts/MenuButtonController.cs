@@ -75,7 +75,6 @@ public class MenuButtonController : MonoBehaviour
                 case 3:
                     //Credit
 			        SceneManager.LoadScene("Credit");
-                    PlayerPrefs.DeleteAll();
                     break;
             }
 		}
