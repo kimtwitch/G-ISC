@@ -45,6 +45,11 @@ public class LevelController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!Input.anyKey && PlayerPrefs.GetInt("KeyDown",0) == 1)
+        {
+            PlayerPrefs.SetInt("KeyDown",0);
+        }
+
         Vector3 levelObjPos = transform.position;
 
         if(Input.GetAxis("Horizontal") != 0)
@@ -77,7 +82,8 @@ public class LevelController : MonoBehaviour
         levelDesc.text = levelDescriptions[level];
         
         
-		if (Input.GetAxis("Submit") == 1) {
+		if (Input.GetAxis("Submit") == 1 && PlayerPrefs.GetInt("KeyDown",0) == 0) {
+            PlayerPrefs.SetInt("KeyDown",1);
             if(level < maxLevel)
             {
                 selectSound.Play();

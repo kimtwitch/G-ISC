@@ -14,16 +14,21 @@ public class LoadSceneOnInput : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetAxis("Submit") == 1)
+        if (!Input.anyKey && PlayerPrefs.GetInt("KeyDown",0) == 1)
+        {
+            PlayerPrefs.SetInt("KeyDown",0);
+        }
+		
+		if (Input.GetAxis("Submit") == 1 && PlayerPrefs.GetInt("KeyDown",0) == 0)
 		{
 			if(currentScene == "Victory") SceneManager.LoadScene("LevelSelect");
 		}
-		if (Input.GetKey("escape"))
+		if (Input.GetKey("escape") && PlayerPrefs.GetInt("KeyDown",0) == 0)
 		{
 			if(cancelSound != null) cancelSound.Play();			
 			SceneManager.LoadScene("Start");
 		}
-		if(Input.GetKey("r"))
+		if(Input.GetKey("r") && PlayerPrefs.GetInt("KeyDown",0) == 0)
 		{
 			if(currentScene == "Credit") 
 			{

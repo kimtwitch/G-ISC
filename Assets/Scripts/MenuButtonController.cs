@@ -22,6 +22,11 @@ public class MenuButtonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!Input.anyKey && PlayerPrefs.GetInt("KeyDown",0) == 1)
+        {
+            PlayerPrefs.SetInt("KeyDown",0);
+        }
+
         if(Input.GetAxis("Vertical") != 0)
         {
             if(!keyDown)
@@ -52,11 +57,13 @@ public class MenuButtonController : MonoBehaviour
         }
 
         
-        if (Input.GetKey("escape")) {
+        if (Input.GetKey("escape") && PlayerPrefs.GetInt("KeyDown",0) == 0) {
+            PlayerPrefs.SetInt("KeyDown",1);
             if (sceneName == "Start") Application.Quit();
         }
         
-		if (Input.GetAxis("Submit") == 1) {
+		if (Input.GetAxis("Submit") == 1 && PlayerPrefs.GetInt("KeyDown",0) == 0) {
+            PlayerPrefs.SetInt("KeyDown",1);
             selectSound.Play();
             switch(index)
             {
