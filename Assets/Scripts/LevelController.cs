@@ -17,6 +17,9 @@ public class LevelController : MonoBehaviour
     public Text levelDesc;
     public bool keyDown;
     private float newX;
+	private bool interSceneInputHandled;
+	private Coroutine inputHandlerCoroutine;
+
 
     // Start is called before the first frame update
     void Start()
@@ -40,15 +43,21 @@ public class LevelController : MonoBehaviour
         }
 
         newX = level * 5f * -1;
+        
+		interSceneInputHandled = false;
+		inputHandlerCoroutine = StartCoroutine(HandleIntersceneInput());
     }
+
+	private IEnumerator HandleIntersceneInput()
+	{
+		yield return new WaitForSeconds(.5f);
+		interSceneInputHandled = true;
+		StopCoroutine(inputHandlerCoroutine);
+	}
 
     // Update is called once per frame
     void Update()
     {
-        if (!Input.anyKey && PlayerPrefs.GetInt("KeyDown",0) == 1)
-        {
-            PlayerPrefs.SetInt("KeyDown",0);
-        }
 
         Vector3 levelObjPos = transform.position;
 
@@ -82,8 +91,7 @@ public class LevelController : MonoBehaviour
         levelDesc.text = levelDescriptions[level];
         
         
-		if (Input.GetAxis("Submit") == 1 && PlayerPrefs.GetInt("KeyDown",0) == 0) {
-            PlayerPrefs.SetInt("KeyDown",1);
+		if (Input.GetAxis("Submit") == 1 && interSceneInputHandled) {
             if(level < maxLevel)
             {
                 selectSound.Play();

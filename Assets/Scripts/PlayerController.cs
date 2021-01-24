@@ -20,16 +20,11 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-        if (!Input.anyKey && PlayerPrefs.GetInt("KeyDown",0) == 1)
-        {
-            PlayerPrefs.SetInt("KeyDown",0);
-        }
 		
 		if (!ProgressTracker.gameOver) 
 		{
 			if (Input.GetKeyUp("escape")) 
 			{
-            	PlayerPrefs.SetInt("KeyDown",1);
 				pauseSound.Play();
 				// pause & resume
 				if (Time.timeScale == 1.0f)
@@ -59,13 +54,12 @@ public class PlayerController : MonoBehaviour {
 		{
         	GameOverUI.SetActive(true);
 			InGameUI.SetActive(false);
-			if (Input.GetAxis("Cancel") == 1 && PlayerPrefs.GetInt("KeyDown",0) == 0) 
+			if (Input.GetAxis("Cancel") == 1) 
 			{
-            	PlayerPrefs.SetInt("KeyDown",1);
 				cancelSound.Play();
 				SceneManager.LoadScene("Start");
 			}
-			if (Input.GetAxis("Submit") == 1 && PlayerPrefs.GetInt("KeyDown",0) == 0) {
+			if (Input.GetAxis("Submit") == 1) {
             	PlayerPrefs.SetInt("KeyDown",1);
 				resetSound.Play();
 				Scene scene = SceneManager.GetActiveScene();

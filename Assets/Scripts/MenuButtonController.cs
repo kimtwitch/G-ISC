@@ -11,21 +11,27 @@ public class MenuButtonController : MonoBehaviour
     public AudioSource menuSound;
     public AudioSource selectSound;
     private string sceneName;
+	private bool interSceneInputHandled;
+	private Coroutine inputHandlerCoroutine;
 
     // Start is called before the first frame update
     void Start()
     {
         menuSound = GetComponent<AudioSource>();
         sceneName = SceneManager.GetActiveScene().name;
+		interSceneInputHandled = false;
+		inputHandlerCoroutine = StartCoroutine(HandleIntersceneInput());
     }
+	private IEnumerator HandleIntersceneInput()
+	{
+		yield return new WaitForSeconds(.5f);
+		interSceneInputHandled = true;
+		StopCoroutine(inputHandlerCoroutine);
+	}
 
     // Update is called once per frame
     void Update()
     {
-        if (!Input.anyKey && PlayerPrefs.GetInt("KeyDown",0) == 1)
-        {
-            PlayerPrefs.SetInt("KeyDown",0);
-        }
 
         if(Input.GetAxis("Vertical") != 0)
         {
@@ -57,13 +63,11 @@ public class MenuButtonController : MonoBehaviour
         }
 
         
-        if (Input.GetKey("escape") && PlayerPrefs.GetInt("KeyDown",0) == 0) {
-            PlayerPrefs.SetInt("KeyDown",1);
-            if (sceneName == "Start") Application.Quit();
+        if (Input.GetKey("escape") && interSceneInputHandled) {
+            //if (sceneName == "Start") Application.Quit();
         }
         
-		if (Input.GetAxis("Submit") == 1 && PlayerPrefs.GetInt("KeyDown",0) == 0) {
-            PlayerPrefs.SetInt("KeyDown",1);
+		if (Input.GetAxis("Submit") == 1 && interSceneInputHandled) {
             selectSound.Play();
             switch(index)
             {
